@@ -3,6 +3,7 @@ resource "aws_s3_bucket" "s3_pre_pro" {
   force_destroy = true
 }
 
+
 resource "aws_s3_bucket_ownership_controls" "s3_pre_pro" {
   bucket = aws_s3_bucket.s3_pre_pro.id
   rule {
@@ -10,12 +11,21 @@ resource "aws_s3_bucket_ownership_controls" "s3_pre_pro" {
   }
 }
 
+resource "aws_s3_bucket_public_access_block" "s3_pre_pro" {
+  bucket = aws_s3_bucket.s3_pre_pro.id
+
+  block_public_acls = false
+  block_public_policy = false
+  ignore_public_acls = false
+  restrict_public_buckets = true
+}
+
 resource "aws_s3_bucket_acl" "s3_pre_pro" {
 
-  depends_on = [ aws_s3_bucket_ownership_controls.s3_pre_pro ]
+  depends_on = [ aws_s3_bucket_ownership_controls.s3_pre_pro, aws_s3_bucket_public_access_block.s3_pre_pro ]
 
   bucket = aws_s3_bucket.s3_pre_pro.id
-  acl = "private"
+  acl = "public-read"
 }
 
 resource "aws_s3_bucket_website_configuration" "s3_pre_pro" {

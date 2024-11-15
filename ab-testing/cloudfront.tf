@@ -90,26 +90,50 @@ resource "aws_cloudfront_distribution" "s3_distribution" {
 }
 
 
+# resource "aws_lambda_permission" "cloudfront-view-request" {
+#   action = "lambda:InvokeFunction"
+#   function_name = aws_lambda_function.viewer_request_function.function_name
+#   principal = "cloudfront.amazonaws.com"
+#   source_arn = aws_cloudfront_distribution.s3_distribution.arn
+#   provider = aws.us-east-1
+# }
+
+# resource "aws_lambda_permission" "cloudfront-origin-request" {
+#   action = "lambda:InvokeFunction"
+#   function_name = aws_lambda_function.origin_request_function.function_name
+#   principal = "cloudfront.amazonaws.com"
+#   source_arn = aws_cloudfront_distribution.s3_distribution.arn
+#   provider = aws.us-east-1
+# }
+
+# resource "aws_lambda_permission" "cloudfront-origin-response" {
+#   action = "lambda:InvokeFunction"
+#   function_name = aws_lambda_function.origin_response_function.function_name
+#   principal = "cloudfront.amazonaws.com"
+#   source_arn = aws_cloudfront_distribution.s3_distribution.arn
+#   provider = aws.us-east-1
+# }
+
 resource "aws_lambda_permission" "cloudfront-view-request" {
-  action = "lambda:InvokeFunction"
+  action = "lambda:GetFunction"
   function_name = aws_lambda_function.viewer_request_function.function_name
-  principal = "cloudfront.amazonaws.com"
+  principal = "edgelambda.amazonaws.com"
   source_arn = aws_cloudfront_distribution.s3_distribution.arn
   provider = aws.us-east-1
 }
 
 resource "aws_lambda_permission" "cloudfront-origin-request" {
-  action = "lambda:InvokeFunction"
+  action = "lambda:GetFunction"
   function_name = aws_lambda_function.origin_request_function.function_name
-  principal = "cloudfront.amazonaws.com"
+  principal = "edgelambda.amazonaws.com"
   source_arn = aws_cloudfront_distribution.s3_distribution.arn
   provider = aws.us-east-1
 }
 
 resource "aws_lambda_permission" "cloudfront-origin-response" {
-  action = "lambda:InvokeFunction"
+  action = "lambda:GetFunction"
   function_name = aws_lambda_function.origin_response_function.function_name
-  principal = "cloudfront.amazonaws.com"
+  principal = "edgelambda.amazonaws.com"
   source_arn = aws_cloudfront_distribution.s3_distribution.arn
   provider = aws.us-east-1
 }
